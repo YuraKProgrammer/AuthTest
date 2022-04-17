@@ -1,5 +1,6 @@
 package tests;
 
+import auth.IHashCalculator;
 import auth.IUserRepository;
 import auth.models.UserPasswordRecord;
 import auth.models.UserRecord;
@@ -10,11 +11,16 @@ public class TestUserRepository implements IUserRepository {
             new UserRecord("Петров",2),
             new UserRecord("Юра",3)
     };
-    UserPasswordRecord[] userPasswords = new UserPasswordRecord[]{
-            new UserPasswordRecord(1, "Ivanov"),
-            new UserPasswordRecord(2, "Petrov"),
-            new UserPasswordRecord(3, "Yura")
-    };
+    UserPasswordRecord[] userPasswords;
+
+    public TestUserRepository(IHashCalculator hashCalculator){
+        userPasswords = new UserPasswordRecord[]{
+                new UserPasswordRecord(1, hashCalculator.calculate("Ivanov")),
+                new UserPasswordRecord(2, hashCalculator.calculate("Petrov")),
+                new UserPasswordRecord(3, hashCalculator.calculate("Yura"))
+        };
+    }
+
     @Override
     public UserRecord findByLogin(String login) {
         for (var u: userRecords) {

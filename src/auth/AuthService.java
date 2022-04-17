@@ -7,8 +7,11 @@ public class AuthService implements IAuthService {
 
     IUserRepository userRepository;
 
-    public AuthService(IUserRepository userRepository){
+    IHashCalculator hashCalculator;
+
+    public AuthService(IUserRepository userRepository, IHashCalculator hashCalculator){
         this.userRepository=userRepository;
+        this.hashCalculator=hashCalculator;
     }
 
     @Override
@@ -18,7 +21,8 @@ public class AuthService implements IAuthService {
             throw new SecurityException("Пользователь неизвестен");
         }
 
-        if (password!=userRepository.findPasswordById(userRecord.id).password){
+        var passwordHash=hashCalculator.calculate(password);
+        if (passwordHash!=userRepository.findPasswordById(userRecord.id).passwordHash){
             throw new SecurityException("Некорректный пароль");
         }
 

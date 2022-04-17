@@ -1,14 +1,12 @@
 package auth;
-
-import auth.AuthService;
-import auth.IAuthService;
 import auth.models.AuthToken;
 
 public class Main {
     public static void main (String[] args){
-        IAuthService authService = new AuthService(new UserRepository());
+        IHashCalculator hashCalculator = new HashCalculator();
+        IAuthService authService = new AuthService(new UserRepository(hashCalculator),hashCalculator);
         try {
-            AuthToken token = authService.loginByPassword("Юра","123");
+            AuthToken token = authService.loginByPassword("Юра","4");
             System.out.println("Аутентификация прошла успешно");
         }
         catch (Exception e){
