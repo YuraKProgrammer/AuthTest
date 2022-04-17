@@ -1,4 +1,8 @@
-import models.AuthToken;
+package auth;
+
+import auth.AuthService;
+import auth.IAuthService;
+import auth.models.AuthToken;
 
 public class Main {
     public static void main (String[] args){

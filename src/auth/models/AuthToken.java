@@ -1,4 +1,4 @@
-package models;
+package auth.models;
 
 public class AuthToken {
 }

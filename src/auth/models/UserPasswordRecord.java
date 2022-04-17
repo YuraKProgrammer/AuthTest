@@ -1,8 +1,8 @@
-package models;
+package auth.models;
 
 public class UserPasswordRecord {
-    int id;
-    String password;
+    public int id;
+    public String password;
     public  UserPasswordRecord(int id, String password){
         this.id=id;
         this.password=password;

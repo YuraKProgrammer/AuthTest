@@ -1,6 +1,9 @@
-import models.AuthToken;
+package auth;
 
-public class AuthService implements  IAuthService{
+import auth.IUserRepository;
+import auth.models.AuthToken;
+
+public class AuthService implements IAuthService {
 
     IUserRepository userRepository;
 
@@ -14,6 +17,11 @@ public class AuthService implements  IAuthService{
         if (userRecord==null){
             throw new SecurityException("Пользователь неизвестен");
         }
+
+        if (password!=userRepository.findPasswordById(userRecord.id).password){
+            throw new SecurityException("Некорректный пароль");
+        }
+
         throw new SecurityException("Метод не реализован");
     }
 }

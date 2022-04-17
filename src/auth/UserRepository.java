@@ -1,5 +1,8 @@
-import models.UserPasswordRecord;
-import models.UserRecord;
+package auth;
+
+import auth.IUserRepository;
+import auth.models.UserPasswordRecord;
+import auth.models.UserRecord;
 
 public class UserRepository implements IUserRepository {
     UserRecord[] userRecords = new UserRecord[]{
@@ -27,6 +30,16 @@ public class UserRepository implements IUserRepository {
         for (var u: userRecords) {
             if (u.id==id){
                 return u;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public UserPasswordRecord findPasswordById(int id) {
+        for (var p: userPasswords){
+            if (p.id==id){
+                return p;
             }
         }
         return null;
