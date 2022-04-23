@@ -3,6 +3,8 @@ package auth;
 import auth.IUserRepository;
 import auth.models.AuthToken;
 
+import java.util.Objects;
+
 public class AuthService implements IAuthService {
 
     IUserRepository userRepository;
@@ -22,10 +24,20 @@ public class AuthService implements IAuthService {
         }
 
         var passwordHash=hashCalculator.calculate(password);
-        if (passwordHash!=userRepository.findPasswordById(userRecord.id).passwordHash){
+        var pH = userRepository.findPasswordById(userRecord.id).passwordHash;
+        if (!Objects.equals(passwordHash, pH)){
             throw new SecurityException("Некорректный пароль");
         }
+        return new AuthToken();
+    }
 
-        throw new SecurityException("Метод не реализован");
+    @Override
+    public int addUser(String login, String password) throws SecurityException{
+        if (userRepository.findByLogin(login)!=null){
+            throw new SecurityException("Пользователь с таким логином уже существует");
+        }
+        int userId = userRepository.add(login).id;
+        userRepository.setPassword(userId,hashCalculator.calculate(password));
+        return userId;
     }
 }

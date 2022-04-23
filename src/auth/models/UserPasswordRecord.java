@@ -1,10 +1,10 @@
 package auth.models;
 
 public class UserPasswordRecord {
-    public int id;
+    public int userId;
     public String passwordHash;
-    public  UserPasswordRecord(int id, String passwordHash){
-        this.id=id;
+    public  UserPasswordRecord(int userId, String passwordHash){
+        this.userId =userId;
         this.passwordHash=passwordHash;
     }
 }

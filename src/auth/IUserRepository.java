@@ -7,4 +7,6 @@ public interface IUserRepository {
     UserRecord findByLogin(String login);
     UserRecord findById(int id);
     UserPasswordRecord findPasswordById(int id);
+    UserRecord add(String login);
+    void setPassword(int userId, String passwordHash);
 }
