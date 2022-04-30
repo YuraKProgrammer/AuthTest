@@ -1,13 +1,12 @@
 package auth;
 
-import auth.IUserRepository;
 import auth.models.AuthToken;
 
 import java.util.Date;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-public class AuthService implements IAuthService {
+public class AuthService implements IAuthService, IReadonlyAuthService {
 
     IUserRepository userRepository;
 
@@ -70,5 +69,22 @@ public class AuthService implements IAuthService {
         int userId = userRepository.add(login).id;
         userRepository.setPassword(userId,hashCalculator.calculate(password));
         return userId;
+    }
+
+    @Override
+    public void logout(String token) {
+        AuthToken authToken = tokenRepository.getByToken(token);
+        if (authToken!=null)
+            tokenRepository.remove(authToken);
+    }
+
+    @Override
+    public int getUserId(String token) {
+        AuthToken authToken = tokenRepository.getByToken(token);
+        if (authToken!=null)
+            return authToken.getUserId();
+        else{
+            throw new SecurityException("Недействительный токен");
+        }
     }
 }

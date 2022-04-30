@@ -1,13 +1,19 @@
 package auth;
+import auth.customers.CalendarService;
 import auth.models.AuthToken;
 
 public class Main {
     public static void main (String[] args){
         IHashCalculator hashCalculator = new HashCalculator();
         System.out.println(hashCalculator.calculate("yura"));
-        IAuthService authService = new AuthService(new UserRepository(hashCalculator),hashCalculator, new TokenFactory(), new TokenRepository());
+        AuthService authService = new AuthService(new UserRepository(hashCalculator),hashCalculator, new TokenFactory(), new TokenRepository());
         authService.addUser("Юра","adm1");
-        AuthToken token = authService.loginByPassword("Юра","adm1");
+        authService.addUser("ПетяВасяМаша","adm2");
+        CalendarService calendarService = new CalendarService(authService);
+
+        AuthToken token = authService.loginByPassword("ПетяВасяМаша","adm2");
+        String[] events = calendarService.getEvents(token.getToken());
+        System.out.println(events[0]);
        // try {
        //     var password = Main.m1(authService,"Юра");
        //     if (password!=null) {

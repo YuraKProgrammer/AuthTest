@@ -12,4 +12,6 @@ public interface IAuthService {
      * @return id нового пользователя
      */
     int addUser(String login, String password) throws SecurityException;
+    void logout(String token);
+    int getUserId(String token);
 }
