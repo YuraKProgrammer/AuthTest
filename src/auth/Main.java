@@ -1,6 +1,10 @@
 package auth;
 import auth.customers.CalendarService;
+import auth.customers.ChatService;
+import auth.customers.Message;
 import auth.models.AuthToken;
+
+import java.util.ArrayList;
 
 public class Main {
     public static void main (String[] args){
@@ -9,11 +13,19 @@ public class Main {
         AuthService authService = new AuthService(new UserRepository(hashCalculator),hashCalculator, new TokenFactory(), new TokenRepository());
         authService.addUser("Юра","adm1");
         authService.addUser("ПетяВасяМаша","adm2");
-        CalendarService calendarService = new CalendarService(authService);
+        ChatService chatService = new ChatService(authService);
 
         AuthToken token = authService.loginByPassword("ПетяВасяМаша","adm2");
-        String[] events = calendarService.getEvents(token.getToken());
-        System.out.println(events[0]);
+        chatService.sendMessage(token.getToken(),1, "Привет");
+        chatService.sendMessage(token.getToken(),1, "Пока");
+        chatService.sendMessage(token.getToken(),1, "123");
+        AuthToken token2 = authService.loginByPassword("Юра","adm1");
+        ArrayList<Message> messages = chatService.getMessagesByUser(token2.getToken(),2);
+        for (var m: messages) {
+            System.out.println(m.getText());
+        }
+        System.out.println(chatService.getSendersUsersIds(token2.getToken()));
+
        // try {
        //     var password = Main.m1(authService,"Юра");
        //     if (password!=null) {
